@@ -29,8 +29,17 @@ export default class App extends React.Component {
   console.log(data)
   this.fetchPosts()
   this.newUser()
-
 }
+handleDelete = async id => {
+    let response = await fetch(`http://localhost:3000/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      }
+    })
+    this.fetchPosts()
+  }
   newUser = () => {
     this.setState({
       showNewUserForm: !this.state.showNewUserForm
@@ -49,6 +58,7 @@ export default class App extends React.Component {
           <User
           key={i}
           user={user}
+          handleDelete={this.handleDelete}
           />
           </>
         ))}

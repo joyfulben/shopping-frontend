@@ -12,7 +12,9 @@ export default class App extends React.Component {
       : null
         }
       <button>Edit</button>
-      <button>Delete</button>
+      <button onClick={() => {
+        this.props.handleDelete(this.props.user.id)
+      }}>Delete</button>
       <button>Add New Cart</button>
       </>
     )
