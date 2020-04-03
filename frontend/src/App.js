@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+export default class App extends React.Component {
+  state = {
+    users: []
+  }
+  componentDidMount() {
+    this.fetchPosts()
+  }
+  fetchPosts = async () => {
+    let response = await fetch('http://localhost:3000/users')
+    let data = await response.json()
+    console.log(data)
+    this.setState({ users: data })
+  }
+  render() {
+    return(
+      <div>
+        {this.state.users.map((user, i) => (
+          <>
+          <h2>{user.name}</h2>
+          {user.carts.length > 0 ?
+            user.carts.map(cart => (
+            <h4>Items: {cart.item} bought at: {cart.origin}</h4>
+              ))
+          : null
+            }
+
+
+          </>
+        ))}
+      </div>
+    )
+  }
 }
-
-export default App;
