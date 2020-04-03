@@ -1,8 +1,10 @@
 import React from 'react';
-
+import User from './components/User'
+import UserForm from './components/UserForm'
 
 export default class App extends React.Component {
   state = {
+    showNewUserForm: false,
     users: []
   }
   componentDidMount() {
@@ -14,20 +16,40 @@ export default class App extends React.Component {
     console.log(data)
     this.setState({ users: data })
   }
+  handleCreate = async (createData) => {
+  let response = await fetch('http://localhost:3000/users', {
+    body: JSON.stringify(createData),
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    }
+  })
+  let data = await response.json()
+  console.log(data)
+  this.setState({
+     users: [...this.state.users, data]
+  })
+}
+  newUser = () => {
+    this.setState({
+      showNewUserForm: !this.state.showNewUserForm
+    })
+  }
   render() {
     return(
       <div>
+        <button onClick={this.newUser}>Add User</button>
+        {this.state.showNewUserForm ?
+        <UserForm handleCreate={this.handleCreate}/> :
+        null
+        }
         {this.state.users.map((user, i) => (
           <>
-          <h2>{user.name}</h2>
-          {user.carts.length > 0 ?
-            user.carts.map(cart => (
-            <h4>Items: {cart.item} bought at: {cart.origin}</h4>
-              ))
-          : null
-            }
-
-
+          <User
+          key={i}
+          user={user}
+          />
           </>
         ))}
       </div>
