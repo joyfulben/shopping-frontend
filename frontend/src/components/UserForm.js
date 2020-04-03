@@ -14,6 +14,11 @@ export default class UserForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.handleCreate(this.state)
+    this.setState({
+      name: '',
+      money: 0
+    })
+
   }
 
 render () {

@@ -27,9 +27,9 @@ export default class App extends React.Component {
   })
   let data = await response.json()
   console.log(data)
-  this.setState({
-     users: [...this.state.users, data]
-  })
+  this.fetchPosts()
+  this.newUser()
+
 }
   newUser = () => {
     this.setState({
